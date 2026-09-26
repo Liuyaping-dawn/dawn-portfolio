@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="刘亚萍 · 视频创作者作品集 — Silent Altitude">
+<title>Silent Altitude — 刘亚萍作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050507;
+  --ink:#f4f1ea;
+  --gold:#c9a13f;
+  --gold-soft:rgba(201,161,63,.55);
+  --gold-faint:rgba(201,161,63,.22);
+  --ink-dim:rgba(244,241,234,.55);
+  --ink-faint:rgba(244,241,234,.34);
+  --hairline:rgba(244,241,234,.09);
+  --serif:'Cormorant Garamond','Songti SC','STSong',serif;
+  --sans:'Jost','PingFang SC','Microsoft YaHei',sans-serif;
+  --script:'Great Vibes','STKaiti',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:rgba(201,161,63,.32);color:#fff}
+
+/* ---------- 顶部 1px 金线进度条 ---------- */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:1px;z-index:1000;
+  background:rgba(244,241,234,.05);
+}
+.progress i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,rgba(201,161,63,.45),var(--gold));
+  box-shadow:0 0 8px rgba(201,161,63,.5);
+}
+
+/* ---------- 顶部全局导航 · 毛玻璃（滚动超过 50px 显形） ----------
+   顶部时完全透明（不遮挡 hero 开头），下滑后淡入玻璃底 + 发丝线 + 投影。
+   配色沿用全站变量：暖黑 rgba(5,5,7,*) / 暖白 / 金。 */
+.topnav{
+  position:fixed;top:0;left:0;width:100%;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 clamp(20px,4vw,44px);
+  background:rgba(5,5,7,0);
+  border-bottom:1px solid rgba(244,241,234,0);
+  -webkit-backdrop-filter:blur(0px);
+  backdrop-filter:blur(0px);
+  transition:background-color .45s ease,border-color .45s ease,
+             box-shadow .45s ease,backdrop-filter .45s ease,
+             -webkit-backdrop-filter .45s ease;
+}
+.topnav.is-scrolled{
+  background:rgba(5,5,7,.55);
+  border-bottom-color:rgba(244,241,234,.09);
+  -webkit-backdrop-filter:blur(10px) saturate(1.12);
+  backdrop-filter:blur(10px) saturate(1.12);
+  box-shadow:0 10px 34px rgba(0,0,0,.38);
+}
+/* 左：名字 · 衬线 + 拉宽字距 */
+.topnav-name{
+  display:flex;align-items:baseline;gap:.6rem;text-decoration:none;
+  font:500 1.04rem/1 var(--serif);letter-spacing:.18em;color:var(--ink);
+  transition:color .3s ease;
+}
+.topnav-name:hover{color:var(--gold)}
+.topnav-name .cn{
+  font:300 .56rem var(--sans);letter-spacing:.44em;color:var(--ink-dim);
+  transition:color .3s ease;
+}
+.topnav-name:hover .cn{color:var(--gold-soft)}
+/* 右：锚点导航 · 小号无衬线 */
+.topnav-links{display:flex;align-items:center;gap:clamp(1.1rem,2.6vw,2.2rem)}
+.topnav-links a{
+  position:relative;display:flex;align-items:baseline;gap:.5em;
+  font:300 .78rem/1 var(--sans);letter-spacing:.12em;
+  color:var(--ink-dim);text-decoration:none;
+  transition:color .3s ease;
+}
+.topnav-links a .en{
+  font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-soft);
+  transition:color .3s ease;
+}
+.topnav-links a::after{
+  content:"";position:absolute;left:0;bottom:-.55rem;height:1px;width:0;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.25));
+  transition:width .4s cubic-bezier(.2,.7,.2,1);
+}
+.topnav-links a:hover{color:var(--ink)}
+.topnav-links a:hover .en{color:var(--gold)}
+.topnav-links a:hover::after{width:100%}
+/* 锚点落点不被导航遮住 */
+.sec{scroll-margin-top:72px}
+footer{scroll-margin-top:76px}
+@media (max-width:640px){
+  .topnav{height:56px}
+  .topnav-name .cn,.topnav-links a .en{display:none}
+  .topnav-links{gap:1.15rem}
+  .topnav-links a{font-size:.72rem;letter-spacing:.1em}
+}
+
+/* ---------- 全站场景 · 两侧山野渐隐（中央保持纯黑） ---------- */
+/* fixed 定位：hero 之后所有内容幕共用同一块背景，滚动时纹丝不动。
+   触发点设在 intro 顶端刚进视口那一刻 —— hero 期间条件不成立，背景绝不介入开头；
+   hero-pin 自身不透明且铺满视口，即便淡入也看不见，不会有漏底。 */
+.stage-glow{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:0;transition:opacity 1.2s ease;
+}
+.stage-glow.is-on{opacity:1}
+.stage-glow span{
+  position:absolute;top:-3%;bottom:-3%;width:clamp(170px,29vw,520px);
+  background-image:url('assets/works/side-glow.jpg');
+  background-size:cover;background-position:center 52%;
+  opacity:.22;
+  filter:saturate(1.05) brightness(1.06) blur(2px);
+}
+.stage-glow span.l{
+  left:0;
+  -webkit-mask-image:linear-gradient(to right,#000 8%,transparent 94%);
+  mask-image:linear-gradient(to right,#000 8%,transparent 94%);
+}
+.stage-glow span.r{
+  right:0;transform:scaleX(-1);
+  -webkit-mask-image:linear-gradient(to right,#000 8%,transparent 94%);
+  mask-image:linear-gradient(to right,#000 8%,transparent 94%);
+}
+main,footer{position:relative;z-index:1}
+
+/* ---------- 胶片颗粒 ---------- */
+body::after{
+  content:"";position:fixed;inset:-40px;z-index:999;pointer-events:none;
+  opacity:.055;mix-blend-mode:overlay;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch"/></filter><rect width="180" height="180" filter="url(%23n)"/></svg>');
+}
+
+/* ---------- HERO ---------- */
+.hero{height:200vh;position:relative;z-index:2}
+.hero-pin{
+  position:sticky;top:0;height:100vh;
+  display:grid;place-items:center;overflow:hidden;
+  background:var(--bg);
+}
+/* 画面本体始终满幅铺满视口：不缩放、不圆角。
+   上滑时顶端与两侧纹丝不动，主体获得全部可用画面。 */
+.frame{
+  position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);
+}
+/* 只在下缘做柔化：随滚动进度把底部边界自然融进黑场。
+   顶端与两侧不再有任何遮挡。（--p=0 时渐变带宽度为 0，开头毫发无损） */
+.edge-fade{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to top,var(--bg) 0,rgba(5,5,7,0) calc(var(--p,0)*32%));
+}
+.frame video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;
+  filter:saturate(.92) contrast(1.05) brightness(.9);
+}
+/* 暗角 vignette */
+.vignette{
+  position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 clamp(90px,16vw,200px) rgba(5,5,7,.78);
+}
+/* 影调层次 */
+.grade{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(130% 95% at 50% 32%,rgba(6,10,24,0) 42%,rgba(5,5,7,.5) 100%);
+}
+/* 滚动时整体压暗，融入黑场 */
+.dim{
+  position:absolute;inset:0;pointer-events:none;background:var(--bg);
+  opacity:calc(var(--p,0)*.55);
+}
+/* 底部渐隐入黑 */
+.bottom-fade{
+  position:absolute;left:0;right:0;bottom:0;height:42%;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(5,5,7,0),rgba(5,5,7,.55) 62%,rgba(5,5,7,.92) 88%,var(--bg));
+}
+.hero-copy{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 6vw;
+  opacity:calc(1 - var(--p,0)*1.7);
+  transform:translateY(calc(var(--p,0)*-64px));
+  will-change:transform,opacity;
+}
+.kicker{
+  font:300 clamp(.62rem,1.4vw,.74rem)/1 var(--sans);
+  letter-spacing:.62em;text-indent:.62em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:clamp(1.4rem,3.4vh,2.4rem);
+}
+.title{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.7rem,10.5vw,8.2rem);
+  line-height:1.04;letter-spacing:.14em;text-indent:.14em;
+  color:var(--ink);
+  text-shadow:0 2px 40px rgba(5,5,7,.85);
+}
+.sub{
+  margin-top:clamp(1.6rem,3.6vh,2.6rem);
+  font:200 clamp(.58rem,1.3vw,.7rem)/1.9 var(--sans);
+  letter-spacing:.46em;text-indent:.46em;text-transform:uppercase;
+  color:var(--ink-dim);
+}
+.hint{
+  position:absolute;bottom:2.6rem;left:50%;transform:translateX(-50%);
+  font:200 .58rem var(--sans);letter-spacing:.5em;text-indent:.5em;
+  color:var(--ink-faint);text-transform:uppercase;
+  opacity:calc((1 - var(--p,0)*2.4)*.85);
+}
+.hint::after{
+  content:"";display:block;width:1px;height:34px;margin:.9rem auto 0;
+  background:linear-gradient(to bottom,var(--gold-soft),transparent);
+  animation:drip 2.4s ease-in-out infinite;
+}
+@keyframes drip{0%,100%{transform:scaleY(.35);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* ---------- 通用区块 ---------- */
+.sec{
+  max-width:1060px;margin:0 auto;
+  padding:clamp(88px,14vh,170px) clamp(22px,6vw,96px);
+}
+.sec-label{
+  font:300 .64rem var(--sans);letter-spacing:.5em;text-transform:uppercase;
+  color:var(--gold-soft);margin-bottom:1.1rem;
+}
+.sec-title{
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(2rem,4.6vw,3.3rem);
+  letter-spacing:.06em;line-height:1.1;
+}
+.sec-sub{
+  margin-top:1rem;font:300 .82rem/1.9 var(--sans);
+  letter-spacing:.24em;color:var(--ink-dim);
+}
+
+/* ---------- 作品分类 · 四张卡片入口 ---------- */
+/* 同样突破 .sec 限宽，让四张卡片有足够横向空间 */
+.cat-sec{
+  max-width:none;
+  padding-left:clamp(22px,4.2vw,64px);
+  padding-right:clamp(22px,4.2vw,64px);
+}
+.cat-sec > header{max-width:1560px;margin:0 auto}   /* 与卡片网格同宽，左边缘对齐 */
+.cat-grid{
+  list-style:none;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(1.1rem,2.3vw,2.1rem);
+  margin-top:3.6rem;
+  max-width:1560px;margin-left:auto;margin-right:auto;
+}
+.cat-item{display:flex}
+.cat-card{
+  position:relative;flex:1;
+  display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+  padding-bottom:1.3rem;
+  border-bottom:1px solid var(--hairline);
+}
+.cat-card::after{
+  content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.12));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .6s cubic-bezier(.7,0,.2,1);
+}
+.cat-card:hover::after{transform:scaleX(1)}
+.cat-thumb{
+  position:relative;display:block;overflow:hidden;
+  aspect-ratio:3/2;border-radius:3px;
+  background:#0a0a0c;
+  box-shadow:inset 0 0 0 1px rgba(244,241,234,.07),0 18px 44px rgba(0,0,0,.55);
+}
+.cat-thumb img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:none;                 /* 原图色彩，不做去饱和/压暗 */
+  transform:scale(1.02);
+  transition:transform 1.1s cubic-bezier(.2,.7,.2,1);
+}
+.cat-thumb::after{   /* 仅底边极窄的一道收口，避免亮图硬切在黑底上 */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:16%;pointer-events:none;
+  background:linear-gradient(to top,rgba(5,5,7,.34),rgba(5,5,7,0));
+}
+.cat-card:hover .cat-thumb img{transform:scale(1.07)}
+.cat-num{
+  position:absolute;top:.9rem;left:1rem;z-index:2;
+  font:200 .6rem var(--sans);letter-spacing:.26em;
+  color:rgba(214,183,118,.95);
+  text-shadow:0 1px 10px rgba(0,0,0,.9);
+}
+.cat-title{
+  margin-top:1.2rem;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.2rem,2vw,1.56rem);line-height:1.3;letter-spacing:.06em;
+  color:var(--ink);
+  transition:color .5s ease;
+}
+.cat-title::after{
+  content:"";display:block;width:40px;height:1px;margin-top:.74rem;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.08));
+  transition:width .65s cubic-bezier(.2,.7,.2,1);
+}
+.cat-card:hover .cat-title{color:var(--gold)}
+.cat-card:hover .cat-title::after{width:88px}
+.cat-en{
+  display:block;margin-top:.72rem;
+  font:200 .56rem var(--sans);letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.cat-desc{
+  display:block;margin-top:.7rem;
+  font:300 .76rem/1.95 var(--sans);letter-spacing:.06em;
+  color:var(--ink-dim);
+}
+.cat-go{
+  display:flex;align-items:center;gap:.6rem;
+  margin-top:auto;padding-top:1.25rem;
+  font:200 .56rem var(--sans);letter-spacing:.34em;text-transform:uppercase;
+  color:var(--ink-faint);
+  transition:color .5s ease;
+}
+.cat-go i{font-style:normal;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.cat-card:hover .cat-go{color:var(--gold-soft)}
+.cat-card:hover .cat-go i{transform:translateX(5px)}
+
+/* ---------- 个人主持案例 · 横向滑动卡轨 ---------- */
+/* 与 .cat-sec 同一套对齐规则：区块突破 .sec 限宽，内部仍收在 1560px，左边缘与上方作品格对齐 */
+.cases-sec{
+  max-width:none;
+  padding-left:clamp(22px,4.2vw,64px);
+  padding-right:clamp(22px,4.2vw,64px);
+}
+.cases-sec > header{
+  max-width:1560px;margin:0 auto;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:1.6rem 2.4rem;flex-wrap:wrap;
+}
+.cases-rail{
+  max-width:1560px;margin:clamp(2.2rem,4.4vh,3.4rem) auto 0;
+  /* 用「双行网格 + 纵向排布」而不是 flex：行高在所有卡之间共享，
+     27 张卡的图片上沿自动严格对齐，标题/简介折行数不同也不会歪 */
+  display:grid;grid-auto-flow:column;
+  grid-auto-columns:clamp(268px,31vw,404px);
+  grid-template-rows:auto auto;
+  column-gap:clamp(14px,1.5vw,22px);
+  padding:0 6px clamp(18px,2.6vh,30px);        /* 6px 是给卡片柔影留的呼吸位 */
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-overflow-scrolling:touch;
+  cursor:grab;
+}
+.cases-rail::-webkit-scrollbar{display:none}
+.cases-rail.is-drag{cursor:grabbing}
+.cases-rail.is-drag .case-media img{pointer-events:none}
+.cases-rail:focus-visible{outline:1px solid var(--gold-soft);outline-offset:8px}
+/* .case 仅为语义容器（article），布局上完全交给网格行 */
+.case{display:contents}
+.case-cap{scroll-snap-align:start;padding-bottom:1.05rem}
+.case-k{
+  display:block;
+  font:200 .56rem var(--sans);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.case-t{
+  display:block;
+  margin-top:.66rem;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1rem,1.35vw,1.16rem);line-height:1.45;letter-spacing:.05em;
+  color:var(--ink);
+}
+.case-t::after{
+  content:"";display:block;width:34px;height:1px;margin-top:.7rem;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.08));
+}
+.case-d{
+  margin-top:.62rem;
+  font:300 .74rem/1.85 var(--sans);letter-spacing:.05em;
+  color:var(--ink-dim);
+}
+.case-media{
+  margin:0;position:relative;display:block;overflow:hidden;
+  border-radius:3px;background:#0a0a0c;
+  box-shadow:inset 0 0 0 1px rgba(244,241,234,.07),0 18px 44px rgba(0,0,0,.55);
+}
+/* 原图原比例：只给宽度，高度由图片自身比例决定 —— 不裁切、不拉伸、不设 object-fit */
+.case-media img{display:block;width:100%;height:auto}
+.cases-track{
+  position:relative;max-width:1560px;height:1px;margin:1.5rem auto 0;
+  background:var(--hairline);overflow:hidden;
+}
+.cases-track i{
+  position:absolute;left:0;top:0;height:100%;width:0;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.12));
+}
+.cases-nav{display:flex;gap:.6rem;padding-bottom:.2rem}
+.rn-btn{
+  width:44px;height:44px;border-radius:999px;cursor:pointer;
+  display:grid;place-items:center;
+  background:rgba(5,5,7,.46);
+  border:1px solid var(--gold-faint);
+  color:rgba(244,241,234,.7);
+  font:300 1.05rem/1 var(--sans);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:border-color .45s ease,color .45s ease,background .45s ease,opacity .45s ease;
+}
+.rn-btn:hover{border-color:var(--gold-soft);color:var(--ink);background:rgba(201,161,63,.1)}
+.rn-btn[disabled]{opacity:.26;cursor:default}
+.rn-btn[disabled]:hover{border-color:var(--gold-faint);color:rgba(244,241,234,.7);background:rgba(5,5,7,.46)}
+
+/* ---------- 落款 ---------- */
+.sign-sec{text-align:center;padding-bottom:clamp(40px,8vh,90px)}
+.script{
+  font-family:var(--script);
+  font-size:clamp(3.2rem,8vw,5.4rem);
+  color:var(--ink);line-height:1.15;
+  text-shadow:0 0 60px rgba(201,161,63,.12);
+}
+.sign-line{
+  display:block;width:130px;height:1px;margin:2rem auto;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.cn-sign{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(.95rem,2vw,1.1rem);
+  letter-spacing:.58em;text-indent:.58em;
+  color:var(--ink-dim);
+}
+
+/* ---------- Footer ---------- */
+footer{
+  border-top:1px solid var(--hairline);
+  padding:2.2rem clamp(22px,6vw,96px);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+  font:200 .6rem var(--sans);letter-spacing:.36em;text-transform:uppercase;
+  color:var(--ink-faint);
+}
+footer .gold{color:var(--gold-soft)}
+
+/* ---------- 联系方式 ---------- */
+.contact-sec{
+  padding-top:0;
+  padding-bottom:clamp(58px,10vh,118px);
+}
+.contact-list{
+  list-style:none;margin-top:2.1rem;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px;background:var(--hairline);
+  border:1px solid var(--hairline);
+}
+.c-item{
+  display:flex;flex-direction:column;gap:.7rem;
+  padding:1.5rem clamp(16px,2.2vw,26px);
+  background:var(--bg);
+  transition:background .5s ease;
+}
+.c-item:hover{background:rgba(244,241,234,.032)}
+.c-k{
+  font:200 .56rem var(--sans);letter-spacing:.32em;text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.c-v{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(1rem,1.7vw,1.22rem);letter-spacing:.045em;line-height:1.3;
+  color:var(--ink);text-decoration:none;
+  word-break:break-all;
+  transition:color .45s ease;
+}
+a.c-v:hover{color:var(--gold)}
+
+/* ---------- 滚动淡入 ---------- */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--d,0s);
+}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- 响应式 · 移动端降级 ---------- */
+@media (max-width:1180px){
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.1rem,3vw,1.9rem)}
+}
+@media (max-width:700px){
+  .hero{height:168vh}
+  .cat-grid{grid-template-columns:1fr;gap:2.1rem;margin-top:2.8rem}
+  .cat-thumb{aspect-ratio:16/9}
+  .sub{letter-spacing:.3em}
+  .hint{display:none}
+  .contact-list{grid-template-columns:1fr}
+  .c-item{padding:1.2rem clamp(16px,5vw,26px)}
+  .cases-sec > header{align-items:flex-start;flex-direction:column}
+  .cases-nav{padding-bottom:0}
+  .cases-rail{grid-auto-columns:min(76vw,300px);margin-top:1.9rem;column-gap:12px}
+}
+
+/* ---------- 个人介绍 · 左自述 / 中工牌 / 右履历（三栏一幕） ---------- */
+/* 三栏需要横向空间，因此本区块突破 .sec 的 1060px 限宽，改为近满幅 */
+.intro-sec{
+  max-width:none;
+  padding-left:clamp(22px,4.2vw,64px);
+  padding-right:clamp(22px,4.2vw,64px);
+  /* 此处原先有一层 var(--bg) 不透明底，是为隔离两侧渐隐背景而设。
+     现在按需求让背景从 hero 之后贯通到底，故移除，使两侧山野能透进这一幕。
+     中央仍为纯黑（背景层向中间渐隐到 0），文字对比度不受影响。 */
+}
+.intro-sec > header{max-width:1560px;margin:0 auto}   /* 与三栏同宽，左边缘对齐 */
+.intro-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(300px,36vw,520px) minmax(0,1fr);
+  gap:clamp(1.6rem,2.8vw,3.2rem);
+  align-items:start;
+  max-width:1560px;margin:3.2rem auto 0;
+}
+/* 中间列：工牌随滚动吸附，两侧长文滚动时它始终在场 */
+.intro-mid{
+  position:sticky;
+  top:clamp(1rem,9vh,5rem);
+  align-self:start;
+  text-align:center;
+}
+.intro-bio{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(.98rem,1.2vw,1.12rem);
+  line-height:2.05;letter-spacing:.06em;
+  color:rgba(244,241,234,.82);
+}
+.intro-bio em{
+  font-style:normal;color:var(--gold);
+}
+.intro-bio .zh-fade{color:rgba(244,241,234,.55)}
+.journal{list-style:none;margin-top:3rem;border-top:1px solid var(--hairline)}
+.j-entry{
+  position:relative;display:block;
+  padding:1.35rem .4rem;
+  border-bottom:1px solid var(--hairline);
+}
+.j-date{
+  font:200 .62rem var(--sans);letter-spacing:.3em;
+  color:var(--gold-soft);
+}
+/* 日期行：左＝日期，右＝品牌标识。
+   为什么不把标识放标题行：实测右栏内容宽在 1440 时 340px、1366 时 321px、1281 时 300px，
+   而最长标题单行就要 289.9px —— 让给 logo 的余地只剩 50 / 31 / 10px。
+   腾讯字标宽高比 7.36:1，压进 50px 只有 7px 高，必然糊；
+   日期行左侧只占 109px，右侧有 230px 空档，放标识不挤任何文字。 */
+.j-top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;
+}
+.j-logo{
+  flex:0 0 auto;display:block;width:auto;
+  object-fit:contain;
+  opacity:.88;
+  transition:opacity .45s ease,filter .45s ease;
+}
+/* 三张原始图长宽比差很多（蔚来 1.08 / 爱奇艺 1.16 / 腾讯 7.36），
+   所以按「视觉等高」分别给高度：字标压到符号高度的 ~0.72，不让字标抢戏。
+   颜色已烘焙进 PNG（不是靠 CSS 滤镜），换图后无需改样式。 */
+.j-logo--nio{height:25px}
+.j-logo--iqiyi{height:25px}
+.j-logo--tencent{height:16px}
+.j-entry:hover .j-logo{opacity:1;filter:brightness(1.14)}
+.j-title{
+  display:block;margin-top:.55rem;
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(1.05rem,1.9vw,1.3rem);letter-spacing:.04em;
+  color:var(--ink);
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),color .5s ease;
+}
+.j-excerpt{
+  display:block;margin-top:.4rem;
+  font:300 .78rem/1.9 var(--sans);letter-spacing:.12em;
+  color:var(--ink-dim);
+}
+.j-entry:hover .j-title{transform:translateX(8px);color:var(--gold)}
+.j-entry::after{
+  content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;
+  background:linear-gradient(90deg,var(--gold),rgba(201,161,63,.12));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .55s cubic-bezier(.7,0,.2,1);
+}
+.j-entry:hover::after{transform:scaleX(1)}
+
+/* ---------- 个人介绍 · 数据条 / 履历 / 荣誉 ---------- */
+/* 数据条：横跨三栏通栏收尾。单元格不再填实底色，让两侧山野背景从格子里透过去；
+   分隔线改由单元格自带的 1px 左边框承担（原先是靠父底 hairline + gap 1px 露色） */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;
+  gap:0;margin:clamp(3rem,7vh,5rem) auto 0;max-width:1440px;
+  background:transparent;
+  border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+}
+.stat{
+  background:transparent;
+  border-left:1px solid var(--hairline);
+  padding:1.55rem 1rem 1.3rem;text-align:center;
+}
+.stat:first-child{border-left:none}
+.stat b{
+  display:block;white-space:nowrap;
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(1.4rem,2.4vw,1.95rem);line-height:1;letter-spacing:.02em;
+  color:var(--gold);
+}
+.stat b small{font-size:.46em;letter-spacing:.08em;margin-left:.16em;color:var(--gold-soft)}
+.stat span{
+  display:block;margin-top:.78rem;
+  font:200 .56rem/1.75 var(--sans);letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.tag-row{
+  display:flex;flex-wrap:wrap;gap:.55rem .6rem;
+  margin-top:2.4rem;
+}
+.tag-row span{
+  padding:.42rem .95rem;
+  border:1px solid var(--gold-faint);border-radius:999px;
+  font:200 .62rem var(--sans);letter-spacing:.2em;
+  color:rgba(244,241,234,.62);
+  transition:border-color .45s ease,color .45s ease;
+}
+.tag-row span:hover{border-color:var(--gold-soft);color:var(--ink)}
+/* 学历：左栏标签行下方，与自述同源的衬线排版 */
+.edu{
+  margin-top:2.5rem;padding-top:1.7rem;
+  border-top:1px solid var(--hairline);
+}
+.edu-k{
+  font:200 .57rem var(--sans);letter-spacing:.44em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.edu-v{
+  margin-top:.85rem;
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(.95rem,1.15vw,1.05rem);line-height:1.8;letter-spacing:.06em;
+  color:rgba(244,241,234,.82);
+}
+.edu-v b{font-weight:500;color:var(--ink)}
+/* 个人社交媒体主页：学历下方，三张竖版分享卡并排
+   grid-template-columns 拿三张图的「宽高比」当权重 → 列宽按比例分配，
+   于是每张图的高度 = 列宽 ÷ 宽高比，三张自动严格等高；图只给 width:100%，
+   高度由自身比例决定 —— 不裁切、不拉伸、不设 object-fit */
+.social{
+  margin-top:2.1rem;padding-top:1.7rem;
+  border-top:1px solid var(--hairline);
+}
+.social-k{
+  font:200 .57rem var(--sans);letter-spacing:.44em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.social-grid{
+  margin-top:1rem;padding:0;
+  display:grid;
+  grid-template-columns:0.6696fr 0.7327fr 0.7521fr;
+  gap:clamp(8px,.9vw,13px);
+  list-style:none;
+}
+.social-grid li{min-width:0}
+.social-grid a{
+  display:block;position:relative;
+  border-radius:3px;overflow:hidden;background:#0a0a0c;
+  box-shadow:inset 0 0 0 1px rgba(244,241,234,.08),0 14px 34px rgba(0,0,0,.52);
+  cursor:zoom-in;
+  transition:box-shadow .45s ease,transform .45s ease;
+}
+.social-grid img{display:block;width:100%;height:auto}
+.social-grid a:hover{
+  transform:translateY(-3px);
+  box-shadow:inset 0 0 0 1px rgba(201,161,63,.45),0 20px 44px rgba(0,0,0,.62);
+}
+.social-grid a:focus-visible{outline:1px solid var(--gold-soft);outline-offset:4px}
+.col-label{
+  margin-top:2.9rem;
+  font:200 .57rem var(--sans);letter-spacing:.44em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.col-label:first-child{margin-top:.45rem}
+.col-label + .journal{margin-top:1.05rem}
+.col-label + .intro-bio{margin-top:1.2rem}
+.col-label + .honor-list{margin-top:.65rem}
+.j-scope{
+  display:block;margin-top:.34rem;
+  font:200 .58rem/1.8 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-soft);
+}
+.honor-list{list-style:none;margin-top:1.1rem}
+.honor-item{
+  display:grid;grid-template-columns:1.7rem minmax(0,1fr);gap:.55rem;
+  padding:.66rem 0;border-bottom:1px solid var(--hairline);
+  font:300 .8rem/1.8 var(--sans);letter-spacing:.05em;
+  color:rgba(244,241,234,.7);
+}
+.honor-item i{
+  font-style:normal;font:200 .56rem var(--sans);
+  letter-spacing:.1em;color:var(--gold-soft);padding-top:.32rem;
+}
+.honor-item b{font-weight:400;color:var(--ink)}
+
+/* ---------- 3D 工牌 · Lanyard（官方 React Bits 组件，独立模块） ---------- */
+/* 容器：嵌入区块而非全屏，官方 .lanyard-wrapper 的 100vh 在此被覆盖为容器高度 */
+#lanyard-root{
+  position:relative;
+  width:100%;max-width:100%;
+  height:clamp(540px,74vh,700px);
+  margin:0 auto;
+  pointer-events:auto;
+}
+#lanyard-root .lanyard-wrapper{height:100%}
+#lanyard-root canvas{display:block;touch-action:pan-y}
+/* 3D 工牌舞台：占位 / 诊断层与 canvas 同框共存，任何加载失败都不再是"空白框" */
+.pass-stage{position:relative;width:100%;max-width:100%;margin:1rem auto 0}
+#lanyard-fallback{
+  position:absolute;inset:0;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  pointer-events:none;text-align:center;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#lanyard-fallback img{
+  width:46%;max-width:190px;height:auto;border-radius:4px;opacity:.92;
+  box-shadow:0 26px 60px rgba(0,0,0,.7),0 0 0 1px rgba(201,161,63,.16);
+  animation:lfFloat 7.5s ease-in-out infinite;
+}
+@keyframes lfFloat{0%,100%{transform:translateY(-6px) rotate(-.7deg)}50%{transform:translateY(7px) rotate(.7deg)}}
+#lanyard-fallback .lf-note{
+  max-width:88%;margin:0;
+  font:200 .58rem/2 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--ink-faint);
+}
+#lanyard-fallback.is-hidden{opacity:0;visibility:hidden}
+#lanyard-fallback.is-error img{opacity:.4;filter:grayscale(.4);animation:none}
+#lanyard-fallback.is-error .lf-note{
+  color:rgba(244,241,234,.66);text-transform:none;letter-spacing:.04em;
+  font-size:.72rem;line-height:1.95;font-weight:300;
+}
+.lf-retry{
+  pointer-events:auto;padding:.6rem 1.6rem;background:none;color:var(--gold);
+  border:1px solid rgba(201,161,63,.5);border-radius:2px;cursor:pointer;
+  font:300 .6rem var(--sans);letter-spacing:.3em;text-transform:uppercase;
+  transition:background .35s ease,border-color .35s ease;
+}
+.lf-retry:hover{background:rgba(201,161,63,.12);border-color:var(--gold)}
+/* 工牌：三栏之中列，四角金框包住 3D 舞台 */
+.press-wrap{margin:0;padding:0;text-align:center}
+.pass-frame{
+  position:relative;
+  display:block;width:100%;
+  padding:2.2rem 0 1.8rem;
+}
+.pass-cap{
+  text-align:center;margin-top:1.6rem;
+  font:200 .6rem var(--sans);letter-spacing:.5em;text-indent:.5em;
+  color:var(--ink-faint);text-transform:uppercase;
+}
+.pass-cap b{font-weight:400;color:var(--gold-soft)}
+.pass-corner{position:absolute;width:22px;height:22px;border:0 solid var(--gold);opacity:.5}
+.pass-corner.p-tl{top:0;left:0;border-top-width:1px;border-left-width:1px}
+.pass-corner.p-tr{top:0;right:0;border-top-width:1px;border-right-width:1px}
+.pass-corner.p-bl{bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
+.pass-corner.p-br{bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+
+/* 窄屏：三栏回归单栏 —— 自述 → 工牌 → 履历，依次阅读 */
+@media (max-width:1280px){
+  .intro-grid{grid-template-columns:1fr;gap:clamp(2.4rem,6vh,3.4rem);max-width:660px}
+  .intro-mid{position:static}
+  .pass-stage{max-width:520px}
+  #lanyard-root{height:clamp(480px,66vh,640px)}
+}
+@media (max-width:640px){
+  .j-logo--nio{height:22px}
+  .j-logo--iqiyi{height:22px}
+  .j-logo--tencent{height:14px}   /* 小屏标识统一缩小一档，位置不变、不挤压任何文字 */
+  .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding:1.3rem .5rem 1.1rem}
+  .stat:nth-child(3){border-left:none}   /* 两列布局下第 3 格换行到第二行首列，不该有竖分隔线 */
+  .tag-row{gap:.45rem}
+  .tag-row span{font-size:.58rem;padding:.38rem .8rem;letter-spacing:.14em}
+  .edu{margin-top:2rem;padding-top:1.4rem}
+  .pass-stage{max-width:100%}
+  #lanyard-root{height:clamp(460px,56vh,540px)}
+}
+
+/* ---------- 无障碍 · 减少动态 ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .frame,.frame video,.hero-copy,.hint{transform:none!important;opacity:1}
+  .dim{opacity:.3}
+  .hint::after{animation:none}
+  .cat-card,.cat-card::after,.cat-thumb img,.cat-title::after,.cat-go i,.stage-glow{transition:none}
+  .social-grid a{transition:none}
+  .social-grid a:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"><i id="progressBar"></i></div>
+
+<!-- ============ 顶部全局导航 · 毛玻璃 ============ -->
+<nav class="topnav" id="topnav" aria-label="全局导航">
+  <a class="topnav-name" href="#hero">Dawn LIU<span class="cn">刘亚萍</span></a>
+  <div class="topnav-links">
+    <a href="#intro">关于我<span class="en">About</span></a>
+    <a href="#works">作品集<span class="en">Works</span></a>
+    <a href="#contact">联系方式<span class="en">Contact</span></a>
+  </div>
+</nav>
+
+<!-- 后段场景的两侧山野渐隐层（fixed 纯装饰，中央保持纯黑） -->
+<div class="stage-glow" id="stageGlow" aria-hidden="true"><span class="l"></span><span class="r"></span></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="hero">
+  <div class="hero-pin">
+    <div class="frame">
+      <video
+        src="阿尔卑斯山脊笔记本电脑_视频_20260925.mp4"
+        poster="电影感_照片级写实的3D场景_一台银色铝合金超薄笔记本电脑__2026-09-25T07-56-02.png"
+        autoplay muted loop playsinline preload="auto"></video>
+      <div class="grade"></div>
+      <div class="vignette"></div>
+      <div class="dim"></div>
+      <div class="edge-fade"></div>
+      <div class="bottom-fade"></div>
+      <div class="hero-copy">
+        <p class="kicker">刘亚萍 · 视频创作者 · Portfolio</p>
+        <h1 class="title">SILENT<br>ALTITUDE</h1>
+        <p class="sub">Hosting · Storytelling · Production · Vibecoding</p>
+      </div>
+      <p class="hint">Scroll</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ 个人介绍 · 左自述 / 中工牌 / 右履历 ============ -->
+<section class="sec intro-sec" id="intro">
+  <header class="reveal">
+    <p class="sec-label">00 — Introduction</p>
+    <h2 class="sec-title">你好，我是刘亚萍</h2>
+    <p class="sec-sub">Host · Storyteller · Builder — 一个爱讲故事的人</p>
+  </header>
+  <div class="intro-grid">
+
+    <div class="intro-left reveal" style="--d:.1s">
+      <p class="col-label">Profile — 自述</p>
+      <div class="intro-bio">
+        <p>我把自己定义为一名<em>复合型内容选手</em>：内容创作是根，商业运营思维是脑，AI 是正在长出的第三只手。它们不是三个并列的标签，而是同一件事的三面——把一个想法讲清楚，让它被看见，再让它被记住。</p>
+        <p><span class="zh-fade">表达是我的起点，却不是我的终点。</span>三年、上百场主持台，教会我如何在一千双眼睛前把节奏稳稳握住，也让我懂得：比起被听见，被记住更难。后来我把这份「稳」带进内容工业：在爱奇艺做出过<em>爆款</em>，也把有效的方法沉淀成团队的公用模板；在蔚来操盘<em>区域主播 IP 矩阵</em>，学着用数据回头看每一次表达。</p>
+        <p>如今我多了一重身份：Builder。<em>零技术基础</em>，用 <em>Vibecoding</em> 从 0 到 1 上线了一款 AI 陪伴产品——讲故事的路径不止一条，工具也从来不该是边界。它让我相信，能力是可以自己长出来的。</p>
+        <p>此刻，我在<em>海拔 2500 米</em>的页面上，重新介绍自己。</p>
+      </div>
+
+      <p class="tag-row">
+        <span>融媒体栏目主持</span>
+        <span>爆款短视频操盘</span>
+        <span>主播 IP 孵化</span>
+        <span>增长与复盘</span>
+        <span>AIGC 内容工具</span>
+        <span>AI × Vibecoding</span>
+      </p>
+
+      <div class="edu reveal" style="--d:.16s">
+        <p class="edu-k">Education &mdash; 学历</p>
+        <p class="edu-v">重庆大学城市科技学院 &middot; <b>播音与主持艺术专业</b></p>
+      </div>
+
+      <div class="social reveal" style="--d:.2s">
+        <p class="social-k">Social &mdash; 个人社交媒体主页</p>
+        <ul class="social-grid">
+          <li>
+            <a href="assets/social/douyin.jpg" target="_blank" rel="noopener" title="抖音 · @刘 Dawn（抖音号 290510lyp）">
+              <img src="assets/social/douyin.jpg" alt="抖音主页二维码：@刘 Dawn，抖音号 290510lyp" loading="lazy" decoding="async">
+            </a>
+          </li>
+          <li>
+            <a href="assets/social/xiaohongshu.jpg" target="_blank" rel="noopener" title="小红书 · 刘 Dawn（小红书号 94546624966）">
+              <img src="assets/social/xiaohongshu.jpg" alt="小红书主页二维码：刘 Dawn，小红书号 94546624966" loading="lazy" decoding="async">
+            </a>
+          </li>
+          <li>
+            <a href="assets/social/shipinhao.jpg" target="_blank" rel="noopener" title="微信视频号 · LyPIN-">
+              <img src="assets/social/shipinhao.jpg" alt="微信视频号二维码：LyPIN-，扫码关注我的视频号" loading="lazy" decoding="async">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 中：3D 工牌 · 官方 React Bits Lanyard（吸附在场） -->
+    <div class="intro-mid">
+      <div class="pass-frame reveal" style="--d:.16s">
+        <i class="pass-corner p-tl"></i><i class="pass-corner p-tr"></i>
+        <i class="pass-corner p-bl"></i><i class="pass-corner p-br"></i>
+        <div class="pass-stage">
+          <div id="lanyard-root" aria-label="3D 工牌，可拖拽"></div>
+          <div id="lanyard-fallback">
+            <img src="assets/lanyard/card-front.png" alt="工牌预览">
+            <p class="lf-note" id="lanyard-note">3D 工牌加载中 · Loading</p>
+            <button type="button" class="lf-retry" id="lanyard-retry" hidden>重新加载</button>
+          </div>
+        </div>
+      </div>
+      <p class="pass-cap reveal" style="--d:.22s">Press Pass — <b>拖拽 / 轻点切换照片 · Drag or tap to flip</b></p>
+    </div>
+
+    <div class="intro-right reveal" style="--d:.2s">
+      <p class="col-label">Selected Experience — 履历</p>
+      <ul class="journal">
+        <li class="j-entry">
+          <span class="j-top">
+            <span class="j-date">2026 · 06 — 09</span>
+            <img class="j-logo j-logo--nio" src="assets/brands/nio.png" alt="NIO 蔚来汽车 Logo" width="27" height="25">
+          </span>
+          <span class="j-title">NIO 蔚来汽车 · RMC 市场营销</span>
+          <span class="j-scope">Campaign · Host IP Matrix · Growth</span>
+          <span class="j-excerpt">独立策划麦当劳 × 蔚来 / 乐道跨品牌 Campaign；产出《区域传播 Guide Book》《短视频脚本模板库》，被采纳为日常执行标准；为 5 位区域主播输出 IP 内容定位与创作框架，区域线上用增 8 月全国第一。</span>
+        </li>
+        <li class="j-entry">
+          <span class="j-top">
+            <span class="j-date">2026 · 03 — 05</span>
+            <img class="j-logo j-logo--iqiyi" src="assets/brands/iqiyi.png" alt="iQIYI 爱奇艺 Logo" width="29" height="25">
+          </span>
+          <span class="j-title">爱奇艺 · 新媒体运营</span>
+          <span class="j-scope">Viral Editing · Template System</span>
+          <span class="j-excerpt">独立剪辑单条点赞 30 万+、完播率约 8% 的爆款视频；自研花式剪辑模板（3 分钟内使用 5 种以上）拉升完播率；运营 10 万 / 30 万粉泛娱乐双号，并把爆款方法沉淀为团队可复用经验。</span>
+        </li>
+        <li class="j-entry">
+          <span class="j-top">
+            <span class="j-date">2026 · 04 — 06</span>
+            <img class="j-logo j-logo--tencent" src="assets/brands/tencent.png" alt="Tencent 腾讯 Logo" width="118" height="16">
+          </span>
+          <span class="j-title">腾讯 AI-HR 培训生线上实战营</span>
+          <span class="j-scope">0 → 1 Product · AI</span>
+          <span class="j-excerpt">零技术基础，用 VibeCoding 在 3 天内搭建可交互网页产品「未来鹅」AI 陪伴 Demo，部署至公网并开源至 GitHub，验证了快速学习与 AI 落地能力。</span>
+        </li>
+      </ul>
+
+      <p class="col-label">Honours — 荣誉</p>
+      <ul class="honor-list">
+        <li class="honor-item"><i>01</i><span>2025 中华经典诵写讲大赛 重庆赛区（经典诵读专业组）<b>一等奖</b></span></li>
+        <li class="honor-item"><i>02</i><span>2026 首届「寻未中国国际短视频大赛」<b>一等奖</b></span></li>
+        <li class="honor-item"><i>03</i><span>四川省慈善公益联合总会 公益短视频大赛<b>一等奖</b></span></li>
+        <li class="honor-item"><i>04</i><span>重庆市永川区书香重庆「我的国依旧五岳向上」<b>金奖</b></span></li>
+        <li class="honor-item"><i>05</i><span>第十一届重庆市（川渝）播音主持电视主持人大赛<b>三等奖</b></span></li>
+        <li class="honor-item"><i>06</i><span>「NICE 盐城 经开有你」主播短视频大赛<b>全国三等奖</b></span></li>
+        <li class="honor-item"><i>07</i><span>重庆市 2026「阅读之星」<b>荣誉称号</b></span></li>
+        <li class="honor-item"><i>08</i><span>重庆市大足石刻旅游景区<b>「文旅推荐大使」</b>称号</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- 数据条 · 通栏收尾 -->
+  <div class="stat-grid reveal" style="--d:.26s">
+    <div class="stat"><b>3<small>年+</small></b><span>Hosting<br>主持经验</span></div>
+    <div class="stat"><b>100<small>+</small></b><span>Events<br>活动执麦</span></div>
+    <div class="stat"><b>1097.3<small>万</small></b><span>Views<br>单条最高播放</span></div>
+    <div class="stat"><b>2400<small>+</small></b><span>Leads<br>营销获客覆盖</span></div>
+  </div>
+</section>
+
+<!-- ============ 作品分类 · 四张卡片入口 ============ -->
+<section class="sec cat-sec" id="works">
+  <header class="reveal">
+    <p class="sec-label">01 — Index</p>
+    <h2 class="sec-title">Selected Works</h2>
+    <p class="sec-sub">四类创作 · 点开卡片进入对应作品页</p>
+  </header>
+
+  <ul class="cat-grid">
+    <li class="cat-item reveal" style="--d:.05s">
+      <a class="cat-card" href="works-hosting.html">
+        <span class="cat-thumb">
+          <img src="assets/works/cat-01-hosting.jpg" alt="出镜主持 作品封面" loading="lazy">
+          <span class="cat-num">01</span>
+        </span>
+        <span class="cat-title">出镜主持</span>
+        <span class="cat-en">Voice &amp; Presence — Hosting</span>
+        <span class="cat-desc">新闻栏目与电台主播间、千人年会、品牌峰会与沙龙现场执麦。</span>
+        <span class="cat-go">View Works <i>→</i></span>
+      </a>
+    </li>
+
+    <li class="cat-item reveal" style="--d:.12s">
+      <a class="cat-card" href="works-shortvideo.html">
+        <span class="cat-thumb">
+          <img src="assets/works/cat-02-shortvideo.jpg" alt="个人短视频创作 作品封面" loading="lazy">
+          <span class="cat-num">02</span>
+        </span>
+        <span class="cat-title">个人短视频创作</span>
+        <span class="cat-en">Frames in Motion — Storytelling</span>
+        <span class="cat-desc">爆款短视频、花式剪辑模板，与泛娱乐双号的运营与复盘。</span>
+        <span class="cat-go">View Works <i>→</i></span>
+      </a>
+    </li>
+
+    <li class="cat-item reveal" style="--d:.19s">
+      <a class="cat-card" href="works-internship.html">
+        <span class="cat-thumb">
+          <img src="assets/works/cat-03-internship.jpg" alt="实习视频作品 封面" loading="lazy">
+          <span class="cat-num">03</span>
+        </span>
+        <span class="cat-title">实习视频作品</span>
+        <span class="cat-en">Internship Works — Production</span>
+        <span class="cat-desc">爱奇艺新媒体运营、蔚来 RMC 区域主播 IP，与跨品牌 Campaign 影像。</span>
+        <span class="cat-go">View Works <i>→</i></span>
+      </a>
+    </li>
+
+    <li class="cat-item reveal" style="--d:.26s">
+      <a class="cat-card" href="works-vibecoding.html">
+        <span class="cat-thumb">
+          <img src="assets/works/cat-04-vibe.jpg" alt="Vibe coding 与营销方案 封面" loading="lazy">
+          <span class="cat-num">04</span>
+        </span>
+        <span class="cat-title">Vibe coding / 营销方案</span>
+        <span class="cat-en">Hypernova — AI &amp; Marketing</span>
+        <span class="cat-desc">「未来鹅」AI 陪伴产品、Vibecoding 实践，与营销方案、脚本模板库。</span>
+        <span class="cat-go">View Works <i>→</i></span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ 个人主持案例 · 横向滑动卡轨（数据来自主持案例 PDF 6-32 页） ============ -->
+<section class="sec cases-sec" id="cases">
+  <header class="reveal">
+    <div class="cases-head">
+      <p class="sec-label">02 &mdash; Hosting Cases</p>
+      <h2 class="sec-title">个人主持案例</h2>
+      <p class="sec-sub">左右滑动查看</p>
+    </div>
+    <div class="cases-nav">
+      <button class="rn-btn" id="casesPrev" type="button" aria-label="上一组主持案例" aria-controls="caseRail">&#8249;</button>
+      <button class="rn-btn" id="casesNext" type="button" aria-label="下一组主持案例" aria-controls="caseRail">&#8250;</button>
+    </div>
+  </header>
+
+  <div class="cases-rail" id="caseRail" tabindex="0" aria-label="个人主持案例，可横向滑动查看">
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">融媒体中心 · 电视栏目</span>
+        <h3 class="case-t">重庆市九龙坡区融媒体中心《今日关注》</h3>
+        <p class="case-d">区级新闻栏目出镜主持，日常播报与现场报道。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-06.jpg" alt="重庆市九龙坡区融媒体中心《今日关注》 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">广播电台 · 出镜记者</span>
+        <h3 class="case-t">晋江广播电视台综合广播实习主播</h3>
+        <p class="case-d">新闻播报、宣传片拍摄与出镜记者，电台与镜头双线实践。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-07.jpg" alt="晋江广播电视台综合广播实习主播 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">大型会议</span>
+        <h3 class="case-t">2026 Tencent 腾讯城市峰会重庆站 · 腾云出海沙龙</h3>
+        <p class="case-d">腾讯城市峰会分论坛，面向企业客户的出海主题沙龙主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-09.jpg" alt="2026 Tencent 腾讯城市峰会重庆站 · 腾云出海沙龙 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">上市发布会</span>
+        <h3 class="case-t">法国 EAFIT 全球新品上市发布会</h3>
+        <p class="case-d">中英双语主持，跨国品牌全球新品发布现场。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-10.jpg" alt="法国 EAFIT 全球新品上市发布会 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">品牌年会</span>
+        <h3 class="case-t">2026 广州 NIO 蔚来三品牌千人车友年会</h3>
+        <p class="case-d">三品牌联合车友年会，与蔚来 CEO 李斌同台主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-11.jpg" alt="2026 广州 NIO 蔚来三品牌千人车友年会 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">汽车展会</span>
+        <h3 class="case-t">2026 重庆 Auto 国际车展星途 EXEED 展台</h3>
+        <p class="case-d">国际车展品牌展台主持，产品讲解与现场互动。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-12.jpg" alt="2026 重庆 Auto 国际车展星途 EXEED 展台 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">媒体发布会</span>
+        <h3 class="case-t">2026 蔚来 NIO 五代站全国 7 市上线（广州站）</h3>
+        <p class="case-d">换电站上新媒体发布会主持，全国 7 城联动。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-13.jpg" alt="2026 蔚来 NIO 五代站全国 7 市上线（广州站） 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">新车发布会</span>
+        <h3 class="case-t">北京越野汽车 BJ 长续航版新车发布会</h3>
+        <p class="case-d">越野品牌新车发布现场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-14.jpg" alt="北京越野汽车 BJ 长续航版新车发布会 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">开盘仪式</span>
+        <h3 class="case-t">合龙房地产 2026「聚龙居」耀世开盘仪式</h3>
+        <p class="case-d">地产项目开盘仪式现场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-15.jpg" alt="合龙房地产 2026「聚龙居」耀世开盘仪式 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">投教会议</span>
+        <h3 class="case-t">中国邮政重庆涪陵区分公司「邮享财富 智护商贸」</h3>
+        <p class="case-d">投教会议主持，面向商贸客群的产品宣讲与互动。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-16.jpg" alt="中国邮政重庆涪陵区分公司「邮享财富 智护商贸」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">客户会议</span>
+        <h3 class="case-t">中国邮政银行 · 中邮保险重庆开州支行「邮银财富 渝您同行」</h3>
+        <p class="case-d">银保联合客户会议主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-17.jpg" alt="中国邮政银行 · 中邮保险重庆开州支行「邮银财富 渝您同行」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">客户会议</span>
+        <h3 class="case-t">中国邮政储蓄银行丰都支行「一路邮你 艾满端阳」</h3>
+        <p class="case-d">端午主题客户会议第一场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-18.jpg" alt="中国邮政储蓄银行丰都支行「一路邮你 艾满端阳」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">诵读大会</span>
+        <h3 class="case-t">中央广播电视总台央广网「中华经典诵读大会」重庆总决选</h3>
+        <p class="case-d">央广网主办赛事重庆总决选现场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-19.jpg" alt="中央广播电视总台央广网「中华经典诵读大会」重庆总决选 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">客户答谢宴</span>
+        <h3 class="case-t">中国邮政储蓄银行长寿支行「中秋月圆 邮颐安康」</h3>
+        <p class="case-d">中秋主题客户答谢宴主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-20.jpg" alt="中国邮政储蓄银行长寿支行「中秋月圆 邮颐安康」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">客户会议 · 第二场</span>
+        <h3 class="case-t">中国邮政储蓄银行丰都支行「一路邮你 艾满端阳」</h3>
+        <p class="case-d">同一主题系列会议第二场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-21.jpg" alt="中国邮政储蓄银行丰都支行「一路邮你 艾满端阳」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">政府宣传</span>
+        <h3 class="case-t">央广网 · 重庆市生态环保局 生态文化「进万家」宣传活动</h3>
+        <p class="case-d">环保主题公益宣传活动主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-22.jpg" alt="央广网 · 重庆市生态环保局 生态文化「进万家」宣传活动 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">亲子互动</span>
+        <h3 class="case-t">中国邮政储蓄银行丰都支行「邮你的夏天更快乐」</h3>
+        <p class="case-d">亲子互动会议主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-23.jpg" alt="中国邮政储蓄银行丰都支行「邮你的夏天更快乐」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">校庆晚会</span>
+        <h3 class="case-t">重庆大学城市科技学院 20 周年校庆暨迎新晚会</h3>
+        <p class="case-d">母校 20 周年校庆暨迎新晚会主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-24.jpg" alt="重庆大学城市科技学院 20 周年校庆暨迎新晚会 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">品牌派对</span>
+        <h3 class="case-t">2025 无极机车极克派对 · 泉州站</h3>
+        <p class="case-d">机车品牌城市派对活动主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-25.jpg" alt="2025 无极机车极克派对 · 泉州站 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">新品发布</span>
+        <h3 class="case-t">华为品牌「悦动三环」山城追踪计划 · 新品发布暨骑行交流</h3>
+        <p class="case-d">华为新品发布与骑行交流活动主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-26.jpg" alt="华为品牌「悦动三环」山城追踪计划 · 新品发布暨骑行交流 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">上市发布会</span>
+        <h3 class="case-t">广汽埃安百城团购会暨新品「霸王龙」上市重庆站主会场</h3>
+        <p class="case-d">新车上市重庆主会场主持，百城团购联动。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-27.jpg" alt="广汽埃安百城团购会暨新品「霸王龙」上市重庆站主会场 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">汽车展会</span>
+        <h3 class="case-t">第四届西南国际汽车博览会东风风行展台</h3>
+        <p class="case-d">国际汽车博览会品牌展台主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-28.jpg" alt="第四届西南国际汽车博览会东风风行展台 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">户外音乐会</span>
+        <h3 class="case-t">重庆观音桥启元光里 · 华为品牌「听我想听」户外音乐会</h3>
+        <p class="case-d">商圈户外音乐会现场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-29.jpg" alt="重庆观音桥启元光里 · 华为品牌「听我想听」户外音乐会 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">户外音乐会</span>
+        <h3 class="case-t">华为品牌主办「张韶涵歌友会」</h3>
+        <p class="case-d">品牌冠名歌友会户外音乐会主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-30.jpg" alt="华为品牌主办「张韶涵歌友会」 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">电竞赛事</span>
+        <h3 class="case-t">电信集团主办 第八届「天翼杯」电竞黄金联赛</h3>
+        <p class="case-d">电竞赛事现场主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-31.jpg" alt="电信集团主办 第八届「天翼杯」电竞黄金联赛 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+    <article class="case">
+      <div class="case-cap">
+        <span class="case-k">户外答谢</span>
+        <h3 class="case-t">迪卡侬运动品牌 &amp; 百特牛奶联名城市露营节</h3>
+        <p class="case-d">联名露营节户外答谢活动主持。</p>
+      </div>
+      <figure class="case-media">
+        <img src="assets/cases/case-32.jpg" alt="迪卡侬运动品牌 与 amp; 百特牛奶联名城市露营节 主持现场" width="1440" height="810" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </div>
+
+  <div class="cases-track" aria-hidden="true"><i id="casesBar"></i></div>
+</section>
+
+<!-- ============ 落款 ============ -->
+<section class="sec sign-sec">
+  <p class="script reveal">Liu Yaping</p>
+  <span class="sign-line reveal" style="--d:.1s"></span>
+  <p class="cn-sign reveal" style="--d:.18s">二〇二六年</p>
+</section>
+
+<!-- ============ 联系方式 ============ -->
+<section class="sec contact-sec" id="contact">
+  <p class="sec-label reveal">联系方式 &mdash; Contact</p>
+  <ul class="contact-list">
+    <li class="c-item reveal" style="--d:.06s">
+      <span class="c-k">邮箱 / Email</span>
+      <a class="c-v" href="mailto:lypin2023@qq.com">lypin2023@qq.com</a>
+    </li>
+    <li class="c-item reveal" style="--d:.12s">
+      <span class="c-k">电话 / Phone</span>
+      <a class="c-v" href="tel:+8615960782690">15960782690</a>
+    </li>
+    <li class="c-item reveal" style="--d:.18s">
+      <span class="c-k">微信 / WeChat</span>
+      <span class="c-v">Lypp2929</span>
+    </li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <span>© MMXXVI <span class="gold">Liu Yaping</span> — Silent Altitude</span>
+  <span>Crafted in quiet motion · <span class="gold">鲲鹏</span></span>
+</footer>
+
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- 滚动进度：rAF 节流 ---- */
+  var hero  = document.getElementById("hero");
+  var bar   = document.getElementById("progressBar");
+  var video = document.querySelector(".frame video");
+  var introSec = document.getElementById("intro");
+  var glow = document.getElementById("stageGlow");
+  var nav  = document.getElementById("topnav");
+  var ticking = false;
+
+  function update(){
+    ticking = false;
+    var doc = document.documentElement;
+    var y = window.scrollY || doc.scrollTop;
+    var max = doc.scrollHeight - window.innerHeight;
+    if (max > 0) bar.style.width = (Math.min(1, Math.max(0, y / max)) * 100) + "%";
+
+    /* 顶部导航：超过 50px 显形毛玻璃，回到顶部恢复全透明 */
+    if (nav) nav.classList.toggle("is-scrolled", y > 50);
+
+    if (!reduced && hero){
+      var total = hero.offsetHeight - window.innerHeight;
+      var p = total > 0 ? Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / total)) : 0;
+      hero.style.setProperty("--p", p.toFixed(4));
+    }
+
+    /* 两侧山野渐隐：hero 一结束就淡入，并常驻到页面末尾，使下滑的所有内容幕共用同一块背景 */
+    if (glow && introSec){
+      var vh = window.innerHeight || 1;
+      /* intro.top = 视口高 → hero 刚好铺满屏幕（条件不成立，开头零影响）
+         intro.top <  视口高 → hero 开始退场、简介幕进入 → 淡入，之后一路保持 */
+      glow.classList.toggle("is-on", introSec.getBoundingClientRect().top < vh - 2);
+    }
+  }
+  function onScroll(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", onScroll, {passive:true});
+  update();
+
+  /* ---- 区块淡入上移：IntersectionObserver ---- */
+  /* 兜底说明：若刷新后浏览器直接恢复到下方位置，被"越过"的区块不会触发 isIntersecting，
+     会一直停在 opacity:0（看起来像页面缺了一块）。下面用一次极轻量的扫描把它们点亮。 */
+  var reveals = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !reduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.15, rootMargin:"0px 0px -6% 0px"});
+    reveals.forEach(function(el){ io.observe(el); });
+
+    var sweep = function(){
+      var left = document.querySelectorAll(".reveal:not(.in)");
+      if (!left.length){ window.removeEventListener("scroll", onSweep); return; }
+      var line = (window.innerHeight || 0) * .9;
+      for (var i = 0; i < left.length; i++){
+        if (left[i].getBoundingClientRect().top < line){ left[i].classList.add("in"); io.unobserve(left[i]); }
+      }
+    };
+    var onSweep = function(){ requestAnimationFrame(sweep); };
+    sweep();
+    window.addEventListener("scroll", onSweep, {passive:true});
+    window.addEventListener("load", onSweep);
+  } else {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---- 视频兜底自动播放 ---- */
+  if (video && video.paused){
+    var kick = function(){ var pr = video.play(); if (pr && pr.catch) pr.catch(function(){}); };
+    kick();
+    document.addEventListener("touchstart", kick, {once:true, passive:true});
+    document.addEventListener("click", kick, {once:true});
+  }
+})();
+</script>
+
+<script>
+/* Lanyard 装载器：能力自检 → 早期预载 → 绘制信号确认，任何失败都在原位给出可读原因 */
+(function(){
+  var host = document.getElementById('lanyard-root');
+  if (!host) return;
+  var fb = document.getElementById('lanyard-fallback');
+  var note = document.getElementById('lanyard-note');
+  var retryBtn = document.getElementById('lanyard-retry');
+  var V = '17';                                  /* 资源版本号：改动 bundle 后 +1，避免旧缓存 */
+  var R = window.__lanyardDiag = { stages: [], errors: [], drew: false, start: Date.now() };
+  var done = false;
+
+  function note_(t){ if (note && !R.errors.length) note.textContent = t; }
+  function hideFallback(){ if (fb) fb.classList.add('is-hidden'); }
+  function fail(msg){
+    if (done) return;
+    done = true;
+    R.errors.push(msg);
+    if (fb) fb.classList.add('is-error');
+    if (note) note.textContent = msg;
+    if (retryBtn) retryBtn.hidden = false;
+    try { console.warn('[lanyard] ' + msg, R); } catch(e){}
+  }
+  if (retryBtn) retryBtn.addEventListener('click', function(){ location.reload(); });
+
+  /* 1) 能力自检：只需要 WebGL。物理为纯 JavaScript 解算，不依赖 WebAssembly，
+        因此即使环境用 CSP 屏蔽了 WASM（内置预览、企业策略、增强安全模式）也能正常交互。 */
+  var webglError = null;
+  try {
+    var probe = document.createElement('canvas');
+    var gl = probe.getContext('webgl2') || probe.getContext('webgl') || probe.getContext('experimental-webgl');
+    if (gl) R.stages.push('webgl=' + gl.getParameter(gl.VERSION));
+    else webglError = '浏览器返回空上下文';
+  } catch (e) { webglError = (e && e.message) || '未知异常'; }
+  if (webglError){
+    fail('3D 工牌无法启动：此浏览器未启用 WebGL（' + webglError + '）。请在 Edge「设置 → 系统和性能」中开启「使用硬件加速」，然后重启浏览器。');
+    return;
+  }
+  R.stages.push('wasm=' + (typeof WebAssembly === 'undefined' ? 'unavailable(不影响)' : 'ok'));
+
+  /* 2) 绘制信号：包一次 WebGL 绘制调用，首次真正出图即视为成功（自动还原，无额外开销） */
+  ['WebGL2RenderingContext', 'WebGLRenderingContext'].forEach(function(name){
+    var C = window[name];
+    if (!C || !C.prototype) return;
+    ['drawArrays', 'drawElements', 'drawArraysInstanced', 'drawElementsInstanced'].forEach(function(fn){
+      var orig = C.prototype[fn];
+      if (typeof orig !== 'function') return;
+      C.prototype[fn] = function(){
+        R.drew = true;
+        C.prototype[fn] = orig;
+        if (fb && !fb.classList.contains('is-error')) hideFallback();
+        return orig.apply(this, arguments);
+      };
+    });
+  });
+
+  /* 3) 注入 bundle（带版本号，避免旧缓存把修复挡住） */
+  var loaded = false;
+  function load(){
+    if (loaded) return;
+    loaded = true;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'assets/js/lanyard-bundle.css?v=' + V;
+    document.head.appendChild(link);
+    var s = document.createElement('script');
+    s.src = 'assets/js/lanyard-bundle.js?v=' + V;
+    s.async = false;
+    s.onerror = function(){ fail('3D 组件文件未能加载（assets/js/lanyard-bundle.js）。请确认 assets 文件夹与本页在同一目录下，然后点「重新加载」。'); };
+    document.body.appendChild(s);
+  }
+
+  /* 4) 触发时机：页面空闲即预载（滚到介绍页时早已就绪），进入视口附近也会立刻触发 */
+  function idle(fn){
+    if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: 2500 });
+    else setTimeout(fn, 1200);
+  }
+  if (document.readyState === 'complete') idle(load);
+  else window.addEventListener('load', function(){ idle(load); });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ load(); io.disconnect(); } });
+    }, { rootMargin: '1200px 0px' });
+    io.observe(host);
+  } else { load(); }
+
+  /* 5) 结果判定：出图 / 报错 / 超时，三种结局都有明确交代 */
+  var timer = setInterval(function(){
+    if (R.errors.length){ clearInterval(timer); fail(R.errors[R.errors.length - 1]); return; }
+    if (R.drew){ clearInterval(timer); done = true; hideFallback(); R.ready = true; return; }
+    var el = Date.now() - R.start;
+    if (el > 9000 && !done) note_('3D 工牌加载中 · ' + Math.round(el / 1000) + 's');
+    if (el > 25000){
+      clearInterval(timer);
+      fail('3D 工牌加载超时（25 秒）。可能是显卡驱动异常或内存不足，点「重新加载」再试一次；若仍失败，请把这句话截图发我。');
+    }
+  }, 500);
+  try { console.log('[lanyard] loader ready', R); } catch(e){}
+})();
+</script>
+
+<script>
+/* 主持案例 · 横向卡轨：箭头翻页 + 进度线 + 鼠标拖拽。
+   只作用于本幕的 rail 元素，不碰全局滚动（window 上的监听一律不加）。 */
+(function(){
+  var rail = document.getElementById('caseRail');
+  if (!rail) return;
+  var prev = document.getElementById('casesPrev');
+  var next = document.getElementById('casesNext');
+  var bar  = document.getElementById('casesBar');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 每次滚动步长：约"可见卡数 - 1"张，翻页时始终留一张旧卡在场上定位
+     （.case 是 display:contents 的语义容器，量宽度要用真正的网格项 .case-cap） */
+  function step(){
+    var card = rail.querySelector('.case-cap');
+    if (!card) return rail.clientWidth * .8;
+    var cs = getComputedStyle(rail);
+    var w = card.getBoundingClientRect().width + (parseFloat(cs.columnGap) || 0);
+    var n = Math.max(1, Math.round(rail.clientWidth / w) - 1);
+    return w * n;
+  }
+  function goto(dir){
+    rail.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  if (prev) prev.addEventListener('click', function(){ goto(-1); });
+  if (next) next.addEventListener('click', function(){ goto(1); });
+
+  function sync(){
+    var max = rail.scrollWidth - rail.clientWidth;
+    if (bar){
+      var r = max > 0 ? rail.scrollLeft / max : 1;
+      bar.style.width = (6 + r * 94).toFixed(2) + '%';   /* 最短 6%，表明后面还有内容 */
+    }
+    if (prev) prev.disabled = rail.scrollLeft <= 2;
+    if (next) next.disabled = max <= 2 || rail.scrollLeft >= max - 2;
+  }
+  rail.addEventListener('scroll', function(){ requestAnimationFrame(sync); }, { passive:true });
+  window.addEventListener('resize', sync, { passive:true });
+  sync();
+
+  /* 鼠标拖拽（触屏/触控板走原生手势，不接管） */
+  var down = false, sx = 0, sl = 0;
+  rail.addEventListener('pointerdown', function(e){
+    if (e.pointerType !== 'mouse') return;
+    down = true; sx = e.clientX; sl = rail.scrollLeft;
+    rail.classList.add('is-drag');
+  });
+  window.addEventListener('pointermove', function(e){
+    if (!down) return;
+    rail.scrollLeft = sl - (e.clientX - sx);
+  });
+  window.addEventListener('pointerup', function(){
+    if (!down) return;
+    down = false;
+    rail.classList.remove('is-drag');
+  });
+})();
+</script>
+</body>
+</html>
