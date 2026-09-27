@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="刘亚萍 · 视频创作者作品集 — Silent Altitude">
 <title>Silent Altitude — 刘亚萍作品集</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
 :root{
-  --bg:#050507;
+  --bg:#0c0c11;
   --ink:#f4f1ea;
   --gold:#c9a13f;
   --gold-soft:rgba(201,161,63,.55);
@@ -46,12 +44,12 @@ body{
 
 /* ---------- 顶部全局导航 · 毛玻璃（滚动超过 50px 显形） ----------
    顶部时完全透明（不遮挡 hero 开头），下滑后淡入玻璃底 + 发丝线 + 投影。
-   配色沿用全站变量：暖黑 rgba(5,5,7,*) / 暖白 / 金。 */
+   配色沿用全站变量：暖黑 rgba(12,12,17,*) / 暖白 / 金。 */
 .topnav{
   position:fixed;top:0;left:0;width:100%;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
   height:64px;padding:0 clamp(20px,4vw,44px);
-  background:rgba(5,5,7,0);
+  background:rgba(12,12,17,0);
   border-bottom:1px solid rgba(244,241,234,0);
   -webkit-backdrop-filter:blur(0px);
   backdrop-filter:blur(0px);
@@ -60,7 +58,7 @@ body{
              -webkit-backdrop-filter .45s ease;
 }
 .topnav.is-scrolled{
-  background:rgba(5,5,7,.55);
+  background:rgba(12,12,17,.55);
   border-bottom-color:rgba(244,241,234,.09);
   -webkit-backdrop-filter:blur(10px) saturate(1.12);
   backdrop-filter:blur(10px) saturate(1.12);
@@ -161,7 +159,7 @@ body::after{
 .edge-fade{
   position:absolute;inset:0;pointer-events:none;
   background:
-    linear-gradient(to top,var(--bg) 0,rgba(5,5,7,0) calc(var(--p,0)*32%));
+    linear-gradient(to top,var(--bg) 0,rgba(12,12,17,0) calc(var(--p,0)*32%));
 }
 .frame video{
   position:absolute;inset:0;width:100%;height:100%;
@@ -171,13 +169,13 @@ body::after{
 /* 暗角 vignette */
 .vignette{
   position:absolute;inset:0;pointer-events:none;
-  box-shadow:inset 0 0 clamp(90px,16vw,200px) rgba(5,5,7,.78);
+  box-shadow:inset 0 0 clamp(90px,16vw,200px) rgba(12,12,17,.78);
 }
 /* 影调层次 */
 .grade{
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(130% 95% at 50% 32%,rgba(6,10,24,0) 42%,rgba(5,5,7,.5) 100%);
+    radial-gradient(130% 95% at 50% 32%,rgba(6,10,24,0) 42%,rgba(12,12,17,.5) 100%);
 }
 /* 滚动时整体压暗，融入黑场 */
 .dim{
@@ -187,7 +185,7 @@ body::after{
 /* 底部渐隐入黑 */
 .bottom-fade{
   position:absolute;left:0;right:0;bottom:0;height:42%;pointer-events:none;
-  background:linear-gradient(to bottom,rgba(5,5,7,0),rgba(5,5,7,.55) 62%,rgba(5,5,7,.92) 88%,var(--bg));
+  background:linear-gradient(to bottom,rgba(12,12,17,0),rgba(12,12,17,.55) 62%,rgba(12,12,17,.92) 88%,var(--bg));
 }
 .hero-copy{
   position:absolute;inset:0;
@@ -207,7 +205,7 @@ body::after{
   font-size:clamp(2.7rem,10.5vw,8.2rem);
   line-height:1.04;letter-spacing:.14em;text-indent:.14em;
   color:var(--ink);
-  text-shadow:0 2px 40px rgba(5,5,7,.85);
+  text-shadow:0 2px 40px rgba(12,12,17,.85);
 }
 .sub{
   margin-top:clamp(1.6rem,3.6vh,2.6rem);
@@ -291,7 +289,7 @@ body::after{
 }
 .cat-thumb::after{   /* 仅底边极窄的一道收口，避免亮图硬切在黑底上 */
   content:"";position:absolute;left:0;right:0;bottom:0;height:16%;pointer-events:none;
-  background:linear-gradient(to top,rgba(5,5,7,.34),rgba(5,5,7,0));
+  background:linear-gradient(to top,rgba(12,12,17,.34),rgba(12,12,17,0));
 }
 .cat-card:hover .cat-thumb img{transform:scale(1.07)}
 .cat-num{
@@ -409,7 +407,7 @@ body::after{
 .rn-btn{
   width:44px;height:44px;border-radius:999px;cursor:pointer;
   display:grid;place-items:center;
-  background:rgba(5,5,7,.46);
+  background:rgba(12,12,17,.46);
   border:1px solid var(--gold-faint);
   color:rgba(244,241,234,.7);
   font:300 1.05rem/1 var(--sans);
@@ -418,7 +416,7 @@ body::after{
 }
 .rn-btn:hover{border-color:var(--gold-soft);color:var(--ink);background:rgba(201,161,63,.1)}
 .rn-btn[disabled]{opacity:.26;cursor:default}
-.rn-btn[disabled]:hover{border-color:var(--gold-faint);color:rgba(244,241,234,.7);background:rgba(5,5,7,.46)}
+.rn-btn[disabled]:hover{border-color:var(--gold-faint);color:rgba(244,241,234,.7);background:rgba(12,12,17,.46)}
 
 /* ---------- 落款 ---------- */
 .sign-sec{text-align:center;padding-bottom:clamp(40px,8vh,90px)}
@@ -828,7 +826,7 @@ a.c-v:hover{color:var(--gold)}
     <div class="frame">
       <video
         src="阿尔卑斯山脊笔记本电脑_视频_20260925.mp4"
-        poster="电影感_照片级写实的3D场景_一台银色铝合金超薄笔记本电脑__2026-09-25T07-56-02.png"
+        poster="电影感_照片级写实的3D场景_一台银色铝合金超薄笔记本电脑__2026-09-25T07-56-02.jpg"
         autoplay muted loop playsinline preload="auto"></video>
       <div class="grade"></div>
       <div class="vignette"></div>
